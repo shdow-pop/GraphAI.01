@@ -1,74 +1,214 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>نسخ النص</title>
+    <div style="text-align: center; margin-bottom: 20px;">
+  <img src="logo.png" alt="GraphAI Logo" style="width: 120px; height: auto;">
+  <h2 style="margin: 10px 0 0 0;">تمثيل الدوال</h2>
+</div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GraphAI - تمثيل الدوال</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 100px;
-      background-color: #f0f0f0;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
     }
 
-    #myText {
-      font-size: 20px;
-      background-color: #fff;
-      padding:70px;
-      border: 1px solid #ccc;
-      width: 80%;
-      margin: 0 auto 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    .container {
+      max-width: 400px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    .form-box {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    input {
+      background-color: #2b2b2b;
+      color: white;
     }
 
     button {
-      font-size: 16px;
-      padding: 10px 20px;
-      background-color: #4CAF50;
+      background-color: #4caf50;
       color: white;
-      border: none;
-      border-radius: 8px;
+      font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: #45a049;
+      background-color: #43a047;
+    }
+
+    .toggle-link {
+      color: #90caf9;
+      background: none;
+      border: none;
+      text-decoration: underline;
+      cursor: pointer;
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    #graph-section {
+      display: none;
+      padding: 20px;
+    }
+
+    #function-input {
+      width: 100%;
+      height: 100px;
+      background-color: #1e1e1e;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    canvas {
+      background-color: white;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>هدا من احد عضماء الشخصيات</h1>
-  <p id="myText">
+  <div class="container">
+    <div id="auth-section" class="form-box">
+      <h2 id="form-title">تسجيل الدخول</h2>
+      <input type="email" id="email" placeholder="البريد الإلكتروني" />
+      <input type="password" id="password" placeholder="كلمة المرور" />
+      <button onclick="login()">دخول</button>
+      <button class="toggle-link" onclick="toggleMode()">إنشاء حساب جديد</button>
+    </div>
 
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢀⣴⠶⠿⠟⠛⠻⠛⠳⠶⣄⡀⠀⠀⠀⠀⠀⠀
-⠀⠀⣠⣶⣿⣿⣶⣖⠶⢶⣤⡀⠀⠈⢿⣆⠀⠀⠀⠀⠀
-⢀⣴⣿⠋⠉⠉⠀⠀⠈⠉⠛⠿⢿⣷⡀⠀⠈⢷⡀⠀⠀⠀
-⡾⠉⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢦⡀⠘⣷⡀⠀⠀
-⣷⢰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢳⡀⢸⡇⠀⠀
-⢻⡜⡤⠀⢀⣀⣤⣶⣶⡄⣴⣾⣿⣛⣓⠀⠀⣧⢸⣇⠀⠀
-⢈⣧⣧⠀⢩⠞⠿⠿⠻⠀⠘⠙⠃⠛⠛⠓⠀⣿⣻⠿⣷⠀
-⢸⡵⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣇⡟⠀
-⠘⢧⣿⡀⠀⠀⠀⠀⢧⣤⣤⣶⣗⠀⠀⠀⠀⠀⠜⣽⠁⠀
-⠀⠈⢿⣧⠀⠀⠀⠀⣿⣿⣿⣿⣿⣀⠀⠀⢠⡟⠁⠀⠀
-⠀⠀⠀⠘⣇⠀⠀⠰⠋⠉⠙⠂⠀⠉⠀⠀⠀⣼⡅⠀⠀⠀
-⠀⠀⠀⠀⠹⣦⡀⠀⠀⠀⠀⠉⠉⠁⠀⠀⠀⣠⠏⢻⣤⡀⠀
-⠀⠀⠀⠀⠀⢹⡷⢦⣄⣀⣀⣀⣀⣤⣴⡾⠃⠀⠘⡿⠙⢶
-⠀⠀⠀⠀⠀⢨⡷⣤⡀⠈⠉⠉⢁⡴⠋⠀⠀⠀⣸⠃⠀⠀
-
-</p>
-  <button onclick="copyText()">انسخ النص</button>
+    <div id="graph-section">
+      <h2>GraphAI - تمثيل الدوال</h2>
+      <p>أدخل الدوال (كل دالة في سطر):</p>
+      <textarea id="function-input" placeholder="مثال: 3x - 4"></textarea>
+      <button onclick="plotGraph()">تمثيل</button>
+      <canvas id="graphCanvas" height="300"></canvas>
+    </div>
+  </div>
 
   <script>
-    function copyText() {
-      const text = document.getElementById("myText").innerText;
-      navigator.clipboard.writeText(text)
-        .then(() => alert("تم نسخ النص!"))
-        .catch(() => alert("حدث خطأ أثناء النسخ."));
+    let isRegister = false;
+
+    function toggleMode() {
+      isRegister = !isRegister;
+      document.getElementById("form-title").innerText = isRegister ? "إنشاء حساب" : "تسجيل الدخول";
+      document.querySelector("#auth-section button").innerText = isRegister ? "تسجيل" : "دخول";
+    }
+
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      if (!email || !password) return alert("يرجى ملء كل الحقول");
+
+      if (isRegister) {
+        localStorage.setItem(email, password);
+        alert("تم إنشاء الحساب، يمكنك تسجيل الدخول الآن.");
+        toggleMode();
+      } else {
+        const stored = localStorage.getItem(email);
+        if (stored === password) {
+          document.getElementById("auth-section").style.display = "none";
+          document.getElementById("graph-section").style.display = "block";
+        } else {
+          alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+        }
+      }
+    }
+
+    let currentChart = null;
+
+    function plotGraph() {
+      const input = document.getElementById("function-input").value.trim();
+      if (!input) return alert("أدخل دالة واحدة على الأقل");
+
+      const functions = input.split('\n').filter(f => f.trim() !== "");
+
+      // التحقق من وجود الدالة "2006" في القائمة
+      if (functions.includes("1889")) {
+        window.location.href = "index.01.html";
+        return; // للتأكد من أنه لا يتم تنفيذ الكود التالي بعد التوجيه
+      }
+
+      const labels = [];
+      const datasets = [];
+      for (let x = -10; x <= 10; x += 1) {
+        labels.push(x);
+      }
+
+      functions.forEach((func, index) => {
+        const data = [];
+        labels.forEach(x => {
+          try {
+            const expr = func.replace(/x/g, `(${x})`);
+            const y = math.evaluate(expr);
+            data.push(y);
+          } catch {
+            data.push(null);
+          }
+        });
+        datasets.push({
+          label: func,
+          data: data,
+          borderColor: `hsl(${index * 60}, 100%, 60%)`,
+          fill: false,
+          tension: 0.3,
+        });
+      });
+
+      const ctx = document.getElementById('graphCanvas').getContext('2d');
+      if (currentChart) currentChart.destroy();
+      currentChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: datasets,
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: 'black' }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: 'black' }
+            },
+            y: {
+              ticks: { color: 'black' }
+            }
+          }
+        }
+      });
     }
   </script>
-
+<a href="hhh.html" target="_blank">
+  <div style="width: 6px; height: 6px; background-color: white; border-radius: 50%; display: inline-block;"></div>
+</a>
 </body>
 </html>
