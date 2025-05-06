@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تم اختراق النظام</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #hackLog {
+      padding: 20px;
+      font-size: 14px;
+      white-space: pre-wrap;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .errorBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: red;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+      font-size: 16px;
+      z-index: 1000;
+      box-shadow: 0 0 10px red;
+    }
+
+    .finalMessage {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #0f0;
+      z-index: 2;
+    }
+
+    .finalMessage h1 {
+      font-size: 26px;
+      margin-bottom: 15px;
+    }
+
+    .hackerWrite {
+      font-size: 22px;
+      color: red;
+      font-weight: bold;
+      border: 2px dashed red;
+      padding: 10px;
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .hackerLogo {
+      font-size: 28px;
+      color: lime;
+      margin-top: 25px;
+      text-shadow: 0 0 8px lime;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- صوت الإنذار -->
+  <audio id="alarmSound" autoplay loop>
+    <source src="https://www.soundjay.com/misc/sounds/alarm-buzzer-01.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- سجلات الاختراق -->
+  <div id="hackLog"></div>
+
+  <script>
+    const hackLog = document.getElementById('hackLog');
+    const messages = [
+  "[+] Initiating breach protocol...",
+  "[+] Bypassing firewall...",
+  "[+] Accessing device memory...",
+  "[+] Extracting credentials...",
+  "[!] System integrity compromised",
+  "[!] Kernel override successful",
+  "[+] Injecting malware...",
+  "[+] Disabling security layers...",
+  "[!] ERROR: System access granted",
+  "[+] Upload complete.",
+  "[+] Session token: 0xH4CK3D",
+  "[!] Remote control established",
+  "[!] WARNING: User activity detected",
+  "[+] Encryption disabled",
+  "[+] Shadow process active...",
+  "[+] Establishing reverse shell...",
+  "[+] SSH tunnel created on port 1337",
+  "[!] Firewall rules overwritten",
+  "[+] Dumping system environment variables",
+  "[+] Scanning network for vulnerabilities...",
+  "[!] Root privileges acquired",
+  "[+] Decrypting user files...",
+  "[!] Injecting payload into system32",
+  "[+] Keylogger successfully deployed",
+  "[!] System BIOS modification in progress",
+  "[+] Hijacking user session...",
+  "[!] Security protocols bypassed",
+  "[+] Stealing authentication tokens...",
+  "[+] Uploading files to remote server...",
+  "[!] CRITICAL: Antivirus permanently disabled",
+  "[!] Detected admin login — exploiting privilege escalation",
+  "[+] MAC address spoofed",
+  "[+] IP address masked — anonymous mode active",
+  "[!] Detected webcam — access granted",
+  "[+] GPS tracking: Enabled",
+  "[!] أنت مراقب منذ 3 أيام...",
+  "[!] تم تسجيل كل ما كتبته الآن",
+  "[!] الكاميرا تعمل الآن — الابتسم للصورة",
+  "[!] تم التحكم الكامل بالجهاز",
+  "[!] لا توجد طريقة للخروج...",
+  "[!] Shadow يراقبك...",
+  "[!] لا تثق بما تراه",
+  "[!] كل ما تفعله يسجل الآن",
+  "[!] نحن قادمون...",
+  "[!] هل تظن أنه مزحة؟"
+];
+
+    let index = 0;
+    const logInterval = setInterval(() => {
+      if (index < messages.length) {
+        hackLog.innerText += messages[index] + '\n';
+        hackLog.scrollTop = hackLog.scrollHeight;
+        index++;
+      }
+    }, 300);
+
+    setTimeout(() => {
+      clearInterval(logInterval);
+      document.body.innerHTML = '';
+      document.body.style.pointerEvents = 'auto';
+
+      // إنشاء العناصر من جديد بعد حذف كل شيء
+      const errorBar = document.createElement('div');
+      errorBar.className = 'errorBar';
+      errorBar.textContent = '! SYSTEM ERROR: CRITICAL FAILURE DETECTED';
+      document.body.appendChild(errorBar);
+
+      const finalMessage = document.createElement('div');
+      finalMessage.className = 'finalMessage';
+
+      const heading = document.createElement('h1');
+      heading.innerHTML = 'تم اختراق الجهاز من طرف الهاكر <strong>Shadow</strong>';
+
+      const hackerWrite = document.createElement('div');
+      hackerWrite.className = 'hackerWrite';
+
+      const hackerLogo = document.createElement('div');
+      hackerLogo.className = 'hackerLogo';
+      hackerLogo.innerHTML = `█▀█ █░█ ▄▀█ █▀▄ █░█<br>█▀▄ █▄█ █▀█ █▄▀ █▄█`;
+
+      finalMessage.appendChild(heading);
+      finalMessage.appendChild(hackerWrite);
+      finalMessage.appendChild(hackerLogo);
+      document.body.appendChild(finalMessage);
+
+      // كتابة "الهاكر" بشكل سريع
+      let i = 0;
+      const text = "الهاكر ";
+      const repeatInterval = setInterval(() => {
+        if (i < 80) {
+          hackerWrite.innerHTML += text;
+          hackerWrite.scrollTop = hackerWrite.scrollHeight;
+          i++;
+        } else {
+          clearInterval(repeatInterval);
+          setTimeout(() => {
+            window.location.href = "data:text/html,<body style='background:black;color:red;font-size:20px;text-align:center;padding-top:100px;'>تم تجميد النظام<br><br>الرجاء عدم إيقاف التشغيل...</body>";
+          }, 5000);
+        }
+      }, 100);
+    }, 15000);
+  </script>
+
+</body>
+</html>
