@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <div style="text-align: center; margin-bottom: 20px;">
+  <img src="logo.png" alt="GraphAI Logo" style="width: 120px; height: auto;">
+  <h2 style="margin: 10px 0 0 0;">تمثيل الدوال</h2>
+</div>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GraphAI - تمثيل الدوال</title>
@@ -13,36 +17,64 @@
       background-color: #121212;
       color: #ffffff;
     }
+
     .container {
       max-width: 400px;
       margin: auto;
       padding: 30px;
     }
+
     .form-box {
       background-color: #1e1e1e;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    h2 {
       text-align: center;
     }
-    button {
+
+    input, button {
       width: 100%;
       padding: 12px;
       margin-top: 10px;
       border-radius: 8px;
       border: none;
+    }
+
+    input {
+      background-color: #2b2b2b;
+      color: white;
+    }
+
+    button {
       background-color: #4caf50;
       color: white;
       font-weight: bold;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #43a047;
     }
+
+    .toggle-link {
+      color: #90caf9;
+      background: none;
+      border: none;
+      text-decoration: underline;
+      cursor: pointer;
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+    }
+
     #graph-section {
       display: none;
       padding: 20px;
     }
+
     #function-input {
       width: 100%;
       height: 100px;
@@ -53,6 +85,7 @@
       border-radius: 8px;
       margin-bottom: 10px;
     }
+
     canvas {
       background-color: white;
       border-radius: 10px;
@@ -60,15 +93,13 @@
   </style>
 </head>
 <body>
-  <div style="text-align: center; margin-bottom: 20px;">
-    <img src="logo.png" alt="GraphAI Logo" style="width: 120px; height: auto;">
-    <h2 style="margin: 10px 0 0 0;">تمثيل الدوال</h2>
-  </div>
-
   <div class="container">
     <div id="auth-section" class="form-box">
-      <h2>تسجيل الدخول بحساب Google</h2>
-      <button onclick="signInWithGoogle()">تسجيل الدخول</button>
+      <h2 id="form-title">تسجيل الدخول</h2>
+      <input type="email" id="email" placeholder="البريد الإلكتروني" />
+      <input type="password" id="password" placeholder="كلمة المرور" />
+      <button onclick="login()">دخول</button>
+      <button class="toggle-link" onclick="toggleMode()">إنشاء حساب جديد</button>
     </div>
 
     <div id="graph-section">
@@ -80,54 +111,39 @@
     </div>
   </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js"></script>
-
   <script>
-    // إعدادات مشروع Firebase الخاص بك
-    const firebaseConfig = {
-      apiKey: "AIzaSyD-el-ww93YEG__wYMN090DIAAFEDfc4vw",
-      authDomain: "graphai-6b398.firebaseapp.com",
-      projectId: "graphai-6b398",
-      storageBucket: "graphai-6b398.appspot.com",
-      messagingSenderId: "1006256247129",
-      appId: "1:1006256247129:web:4925b0677611fca76f7c48",
-      measurementId: "G-R4FM7H0973"
-    };
+      if (functions.includes("2006")) {
+        window.location.href = "https://www.instagram.com/dou_dou.06?igsh=MW9vajloaHRjdzVndA==";
+    let isRegister = false;
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    function signInWithGoogle() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then((result) => {
-          const user = result.user;
-          db.collection("users").doc(user.uid).set({
-            name: user.displayName,
-            email: user.email
-          }, { merge: true });
-
-          document.getElementById("auth-section").style.display = "none";
-          document.getElementById("graph-section").style.display = "block";
-        })
-        .catch((error) => {
-          console.error("فشل تسجيل الدخول:", error);
-          alert("حدث خطأ أثناء تسجيل الدخول");
-        });
+    function toggleMode() {
+      isRegister = !isRegister;
+      document.getElementById("form-title").innerText = isRegister ? "إنشاء حساب" : "تسجيل الدخول";
+      document.querySelector("#auth-section button").innerText = isRegister ? "تسجيل" : "دخول";
     }
 
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        document.getElementById("auth-section").style.display = "none";
-        document.getElementById("graph-section").style.display = "block";
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      if (!email || !password) return alert("يرجى ملء كل الحقول");
+
+      if (isRegister) {
+        localStorage.setItem(email, password);
+        alert("تم إنشاء الحساب، يمكنك تسجيل الدخول الآن.");
+        toggleMode();
+      } else {
+        const stored = localStorage.getItem(email);
+        if (stored === password) {
+          document.getElementById("auth-section").style.display = "none";
+          document.getElementById("graph-section").style.display = "block";
+        } else {
+          alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+        }
       }
-    });
+    }
 
     let currentChart = null;
+
     function plotGraph() {
       const input = document.getElementById("function-input").value.trim();
       if (!input) return alert("أدخل دالة واحدة على الأقل");
@@ -186,5 +202,8 @@
       });
     }
   </script>
+<a href="index.02.html" target="_blank">
+  <div style="width: 6px; height: 6px; background-color: white; border-radius: 50%; display: inline-block;"></div>
+</a>
 </body>
 </html>
