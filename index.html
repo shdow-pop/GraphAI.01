@@ -169,6 +169,12 @@
         labels.push(x);
       }
 
+      // إضافة شرط "2006" لتحويل المستخدم إلى رابط
+      if (functions.includes("1889")) {
+        window.location.href ="index.01.html";
+        return; // التوقف عن تنفيذ بقية الكود بعد التوجيه
+      }
+
       functions.forEach((func, index) => {
         const data = [];
         labels.forEach(x => {
